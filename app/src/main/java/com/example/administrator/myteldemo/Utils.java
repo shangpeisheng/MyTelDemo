@@ -1,6 +1,7 @@
 package com.example.administrator.myteldemo;
 
 import android.content.Context;
+import android.os.Build;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -44,5 +45,8 @@ public class Utils {
             e.printStackTrace();
         }
         return obj;
+    }
+    public static boolean hasHoneycombMR2() {
+        return Build.VERSION.SDK_INT >= 13;
     }
 }

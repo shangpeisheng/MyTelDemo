@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public int screenWidth;
     public int screenHeight;
     DialogInput dialogInput;
-    PopTelCome popTelCome;
     int slideTime = 40000;
     double averageTime;
     HorizontalScrollView hSv;
@@ -57,15 +56,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    if (popTelCome != null) {
-                        popTelCome.setTelComeContent((String) msg.obj);//展示
-                        popTelCome.showCenterWindow();
-                    }
+                    OverlayView.show(MainActivity.this, (String) msg.obj, screenHeight);
                     break;
                 case 2:
-                    if (popTelCome != null) {
-                        popTelCome.closeDialogWindow();
-                    }
+                    OverlayView.hide(MainActivity.this);
                     break;
             }
         }
@@ -131,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startAnimation();
             }
         };
-        popTelCome = new PopTelCome(this, tvDate1, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         initDate();
         initTelManager();
     }

@@ -5,8 +5,8 @@ android {
     buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.example.administrator.myteldemo"
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion 14
+        targetSdkVersion 17
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
