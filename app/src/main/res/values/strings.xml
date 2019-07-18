@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MyTelDemo</string>
+    <string name="input_title">Set   Content</string>
+    <string name="input_tel">Phone Number</string>
+</resources>
