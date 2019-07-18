@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (msg.what) {
                 case 1:
                     if (popTelCome != null) {
-                        popTelCome.setTelComeContent((String) msg.obj);
+                        popTelCome.setTelComeContent((String) msg.obj);//展示
                         popTelCome.showCenterWindow();
                     }
                     break;
