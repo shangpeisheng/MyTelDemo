@@ -15,16 +15,14 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +30,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -56,7 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    OverlayView.show(MainActivity.this, (String) msg.obj, screenHeight);
+                    String tel = initTelStr((String) msg.obj);
+                    OverlayView.show(MainActivity.this, tel, screenHeight);
                     break;
                 case 2:
                     OverlayView.hide(MainActivity.this);
@@ -64,6 +61,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     };
+
+    private String initTelStr(String tel) {
+        if (TextUtils.isEmpty(tel)) {
+            return "";
+        }
+        StringBuffer sb = new StringBuffer();
+        if (tel.length() > 7) {
+            for (int i = 0; i < tel.length(); i++) {
+                String index = tel.charAt(i) + "";
+                if (i >= 4 && i <= 7) {
+                    sb.append("*");
+                } else {
+                    sb.append(index);
+                }
+            }
+        } else if (tel.length() >= 4 && tel.length() <= 7) {
+            for (int i = 0; i < tel.length(); i++) {
+                String index = tel.charAt(i) + "";
+                if (i >= 4) {
+                    sb.append("*");
+                } else {
+                    sb.append(index);
+                }
+            }
+        } else {
+            sb.append(tel);
+        }
+        return sb.toString();
+    }
+
     private static final String tag = "PhoneListenService";
     // 电话管理者对象
     private TelephonyManager mTelephonyManager;
