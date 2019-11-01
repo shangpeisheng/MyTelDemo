@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.net.Uri;
@@ -24,6 +25,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int slideTime = 40000;
     double averageTime;
     HorizontalScrollView hSv;
+    public SreenOrientationListener mSreenOrientationListener;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -102,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSreenOrientationListener = new SreenOrientationListener(this);
+        mSreenOrientationListener.enable();
         requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//去掉信息栏
         setContentView(R.layout.activity_main);
@@ -155,7 +160,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initDate();
         initTelManager();
     }
-
 
     private void initTelManager() {
         requestPermission();
@@ -265,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (mInnerOutCallReceiver != null) {
             unregisterReceiver(mInnerOutCallReceiver);
         }
+        mSreenOrientationListener.disable();
     }
 
     private String getDate(String format) {
@@ -330,6 +335,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     PERMISSIONS_STORAGE,
                     REQUEST_EXTERNAL_STORAGE
             );
+        }
+    }
+
+    class SreenOrientationListener extends OrientationEventListener {
+
+        public SreenOrientationListener(Context context) {
+            super(context);
+        }
+
+        @Override
+        public void onOrientationChanged(int orientation) {
+            if (orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
+                return; // 手机平放时，检测不到有效的角度
+            }
+            if (orientation > 70 && orientation < 125) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+            } else if (orientation > 250 && orientation < 300) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
+            Log.i("orientation", "orientation" + orientation);
         }
     }
 }
