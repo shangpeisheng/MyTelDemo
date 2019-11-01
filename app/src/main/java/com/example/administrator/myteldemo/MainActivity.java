@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //https://down-hk01-cn2.k-api.com/android_slide.apk
         mSreenOrientationListener = new SreenOrientationListener(this);
         mSreenOrientationListener.enable();
         requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
